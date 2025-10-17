@@ -168,6 +168,20 @@ bool scalar_style_query_plain(csubstr s) noexcept
         && (s.first_of("\n#:[]{},") == npos);
 }
 
+/** true if the string contains any non printable ascii value */
+bool scalar_contains_unprintables(csubstr s) noexcept
+{
+    for(size_t i = 0; i < s.len; ++i)
+    {
+        if (!_is_printable_char(s[i]))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+
 NodeType_e scalar_style_choose(csubstr s) noexcept
 {
     if(s.len)
@@ -175,6 +189,10 @@ NodeType_e scalar_style_choose(csubstr s) noexcept
         if(s.begins_with_any(" \n\t")
            ||
            s.ends_with_any(" \n\t"))
+        {
+            return SCALAR_DQUO;
+        }
+        else if(scalar_contains_unprintables(s))
         {
             return SCALAR_DQUO;
         }

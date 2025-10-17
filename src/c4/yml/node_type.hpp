@@ -244,6 +244,13 @@ public:
 /** choose a YAML emitting style based on the scalar's contents */
 RYML_EXPORT NodeType_e scalar_style_choose(csubstr scalar) noexcept;
 
+/** true if the character is in printable range */
+static constexpr C4_ALWAYS_INLINE C4_CONST bool _is_printable_char(char c) noexcept
+{ return (c >= 0x20 && c < 0x7F); }
+
+/** true if the string contains any non printable ascii value */
+bool scalar_contains_unprintables(csubstr s) noexcept;
+
 /** choose a json style based on the scalar's contents */
 RYML_EXPORT NodeType_e scalar_style_json_choose(csubstr scalar) noexcept;
 

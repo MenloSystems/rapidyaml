@@ -987,6 +987,20 @@ void Emitter<Writer>::_write_scalar_dquo(csubstr s, id_type ilevel)
             pos = i+1;
             break;
         }
+        default:
+        {
+            if (!_is_printable_char(curr)) {
+                csubstr sub = s.range(pos, i);
+                this->Writer::_do_write(sub);  // write everything up to (excluding) this char
+                this->Writer::_do_write("\\x"); // write
+                static const char hex_digits[] = "0123456789ABCDEF";
+                unsigned char byte = static_cast<unsigned char>(curr);
+                this->Writer::_do_write(hex_digits[(byte >> 4) & 0x0F]);
+                this->Writer::_do_write(hex_digits[byte & 0x0F]);
+                pos = i+1;
+            }
+            break;
+        }
         }
     }
     // write missing characters at the end of the string
