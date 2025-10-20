@@ -319,7 +319,7 @@ void Emitter<Writer>::_do_visit_flow_sl(id_type node, id_type depth, id_type ile
     for(id_type child = m_tree->first_child(node), count = 0; child != NONE; child = m_tree->next_sibling(child))
     {
         if(count++)
-            this->Writer::_do_write(',');
+            this->Writer::_do_write(", ");
         if(m_tree->is_keyval(child))
         {
             _writek(child, ilevel);
